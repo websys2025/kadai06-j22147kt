@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 import json
 
-APP_ID = "d291355ddffed58ed55ec4ea4baf7d5ae7b1ab44"
+APP_ID = "7af4c3852b739b85ed264f92a6bb5e26a9a296df"
 API_URL  = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData"
 
 params = {
@@ -13,6 +13,13 @@ params = {
 
 response = requests.get(API_URL, params=params)
 data = response.json()
+
+# APIからのレスポンスのステータスを確認
+result = data['GET_STATS_DATA']['RESULT']
+if result['STATUS'] != 0:
+    print("APIリクエストでエラーが発生しました。")
+    print(f"エラーメッセージ: {result['ERROR_MSG']}")
+    exit()  # エラーのため処理を終了
 
 # 統計データからデータ部取得
 values = data['GET_STATS_DATA']['STATISTICAL_DATA']['DATA_INF']['VALUE']
